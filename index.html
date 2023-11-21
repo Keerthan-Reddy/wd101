@@ -7,9 +7,7 @@
       href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <script>
-      src = "index.js";
-    </script>
+    <script src="index.js"></script>
     <title>Document</title>
   </head>
   <body>
@@ -107,6 +105,109 @@
           </div>
         </div>
       </div>
+
+      <!-- User Entries Table -->
+      <div class="mt-8 mx-auto max-w-md">
+        <h2 class="text-2xl font-bold mb-4">User Entries</h2>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Password
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Dob
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Accepted
+              </th>
+            </tr>
+          </thead>
+          <tbody id="user-entries-table-body"></tbody>
+        </table>
+      </div>
     </div>
+
+    <script>
+      let userForm = document.getElementById("user-form");
+      let userEntries = [];
+
+      // Load entries from localStorage on page load
+      window.addEventListener("load", () => {
+        const storedEntries = localStorage.getItem("user-entries");
+        if (storedEntries) {
+          userEntries = JSON.parse(storedEntries);
+          updateTable();
+        }
+      });
+
+      const saveUserForm = (event) => {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const dob = document.getElementById("dob").value;
+        const acceptedTermsAndconditions =
+          document.getElementById("acceptTerms").checked;
+
+        const entry = {
+          name,
+          email,
+          password,
+          dob,
+          acceptedTermsAndconditions,
+        };
+        userEntries.push(entry);
+
+        updateTable(); // Call the function to update the table
+        localStorage.setItem("user-entries", JSON.stringify(userEntries));
+
+        // Clear the form fields after submission
+        userForm.reset();
+      };
+
+      userForm.addEventListener("submit", saveUserForm);
+
+      // Function to update the table with user entries
+      const updateTable = () => {
+        const tableBody = document.getElementById("user-entries-table-body");
+        tableBody.innerHTML = ""; // Clear existing entries
+
+        userEntries.forEach((entry) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap">${entry.name}</td>
+          <td class="px-6 py-4 whitespace-nowrap">${entry.email}</td>
+          <td class="px-6 py-4 whitespace-nowrap">${entry.password}</td>
+          <td class="px-6 py-4 whitespace-nowrap">${entry.dob}</td>
+          <td class="px-6 py-4 whitespace-nowrap">${
+            entry.acceptedTermsAndconditions ? "Yes" : "No"
+          }</td>
+        `;
+          tableBody.appendChild(row);
+        });
+      };
+    </script>
   </body>
 </html>
