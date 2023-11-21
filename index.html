@@ -106,7 +106,6 @@
         </div>
       </div>
 
-      <!-- User Entries Table -->
       <div class="mt-8 mx-auto max-w-md">
         <h2 class="text-2xl font-bold mb-4">User Entries</h2>
         <table class="min-w-full divide-y divide-gray-200">
@@ -153,7 +152,6 @@
       let userForm = document.getElementById("user-form");
       let userEntries = [];
 
-      // Load entries from localStorage on page load
       window.addEventListener("load", () => {
         const storedEntries = localStorage.getItem("user-entries");
         if (storedEntries) {
@@ -180,16 +178,14 @@
         };
         userEntries.push(entry);
 
-        updateTable(); // Call the function to update the table
+        updateTable();
         localStorage.setItem("user-entries", JSON.stringify(userEntries));
 
-        // Clear the form fields after submission
         userForm.reset();
       };
 
       userForm.addEventListener("submit", saveUserForm);
 
-      // Function to update the table with user entries
       const updateTable = () => {
         const tableBody = document.getElementById("user-entries-table-body");
         tableBody.innerHTML = ""; // Clear existing entries
